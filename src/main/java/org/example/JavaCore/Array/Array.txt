@@ -1,0 +1,22 @@
+- Nêu hiểu biết về kiểu mảng trong java
+- Dùng kiểu mảng mang lại ưu , nhược điểm gì?
+
+
+---
+- Array trong Java là một cấu trúc dữ liệu dùng để lứu trữ nhiều giá trị cùng kiểu (kiểu nguyên thủy: int, float, double, char ...).
+Mảng có kích thước cố định, nghĩa là khi khai báo mảng, bạn phải xác định số lượng phần tử mà mảng sẽ chứa.
+
+   + Array có 2 loại: Array và dynamic array
+
+- Ưu điểm:
+    + Truy cập nhanh: Mảng cho phép truy cập trực tiếp đến các phần tử thông qua chỉ số , giúp việc truy xuất dữ liệu nhanh (O(1)).
+    + Dễ sử dụng: Cú pháp khai báo và sử dụng mảng trong Java đơn giản, dễ hiểu - int[].
+    + Tiết kiệm bộ nhớ: ít overhead do mảng được lưu trữ các phần tử liên tiếp trong bộ nhớ.
+
+- Nhược điểm:
+    + Kích thước cố định khi mảng được tạo ra.
+    + Không thể lưu trữ các kiểu dữ liệu khác nhau trong cùng một mảng.
+    + Việc thêm hoặc xóa phần tử ở giữa mảng tốn (O(n)) duyệt qua các phần tử
+    + Không cung cấp các phương thức tiện lợi
+
+

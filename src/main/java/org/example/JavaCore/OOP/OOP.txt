@@ -1,0 +1,70 @@
+- Nêu ra các tính chất quan trọng của hướng đối tượng
+- Access modifier trong java có những loại nào ? Nêu đặc điểm của từng loại
+- Phân biệt class và instance
+- Phân biệt Abstract và Interface , Nêu trường hợp sử dụng cụ thể. Nếu 2 interface hoặc 1 abstract và 1 interface có 1 function cùng tên, có thể cùng hoặc khác kiểu trả về cùng được kế thừa bởi một class, chuyện gì sẽ xảy ra?
+- Thế nào là Overriding và Overloading
+- Một function có access modifier là private or static có thể overriding được không?
+- Một phương thức final có thể kế thừa được không ?
+- Phân biệt hai từ khóa This và Super
+
+1. Nêu ra các tính chất quan trọng của hướng đối tượng
+    + Tính đóng gói: che dấu dữ liệu bên trong chỉ cho phép truy cập qua method public
+    + Tính đa hình: Cùng 1 method nhưng có các hành vi khác nhau trong 1 class hoặc các class.
+    + Tính trừu tượng : ẩn chi tiết triển khai. - thông qua abtract hoặc interface
+    + Tính kế thừa : cho phép class con tái sử dụng hoặc mở rộng từ class cha - giảm lặp code và tái sử dụng
+
+2.Access modifier trong java có những loại nào ? Nêu đặc điểm của từng loại
+    + public : cho phep truy cập mọi nơi
+    + protected : Cho phép truy cập trong cùng 1 package.
+    + private : Cho phép truy cập trong cùng 1 class.
+
+    -- Sử dụng:
+        - Đối với các modifier protected hoăc default thì wrapper vào 1 modifier public..
+            + đối với class (method public - hoặc protected), sử dụng 1 class public kế thừa và xây wraper các method của nó;
+        /// Lưu ý. private - method: sẽ chỉ hoạt động trong class của nó.. dù có kế thừa cũng k gọi dduocj.
+
+    ---- Test :
+
+3.- Phân biệt class và instance
+    Class là nới khai bao thuộc tính, medthod của đối tượng
+    Intance : Khi khởi tạo nó được lưu vào bộ nhớ heap. Mỗi lần khởi tạo la 1 instace đại diện cho 1 object khac nhau.
+
+4.Phân biệt Abstract và Interface , Nêu trường hợp sử dụng cụ thể.
+    Nếu 2 interface hoặc 1 abstract và 1 interface có 1 function cùng tên,
+    có thể cùng hoặc khác kiểu trả về cùng được kế thừa bởi một class, chuyện gì sẽ xảy ra?
+
+    Abstract: là 1 class trừu tượng- không taạo instance trực tiếp bằng new
+            + có thể có - hàm không thân (abtract method - bắt buộc overide với class thường), hàm có thân (không cần), thuộc tính, Contructor
+            + 1 class chỉ được phép kế thừa 1 abtract
+
+    Interface: Định nghĩa các method mà class Impl nó bắt buộc phải triển khai
+               1 Class có thể Impl nhiều interface.
+               1 interface có thể extend nhiều interface khác.
+
+     ---// Java không cho phép cùng 1 phuong thức nhưng lại trả vè 2 loại khác nhau - chi hỗ trợ khác param nhưng cùng kiểu trả về
+     --// Khác kiểu:  vậy nên khi interface hoặc abtact có cùng 1 phương thức nhưng kiểu trả về khác nhau thì java yêu câù chuyển về cùng 1 kiểu dữ liệu
+        Cùng kiểu :
+                TH1: Abtract là 1 hàm k thân - thì interface và abtract đều được class orveride và dung chung 1 hàm đó.
+                TH2: Abtract là 1 hàm có thân - không overide thì hàm của abtract là hàm triển khai của interface.
+                                               - overide thì lấy theo hàm trong class triển khai interface đó.
+
+
+5. - Thế nào là Overriding và Overloading
+
+    Overriding - ghi đè phương thức - hàm ghi đè phải giống hệt hàm cuả class cha hoặc interface.
+    Overloading - Nạp chồng - Các phương thức cùng tên, cùng kiểu trả về nhưng khác param truyền vào.
+
+6. Một function có access modifier là private or static có thể overriding được không?
+
+    Cả 2 đều k thể overide được.
+        - private - chỉ class chứa nó mơới có thể sử dụng được - các class không k thể goọi được.
+        - static - thuộc về class - nghía là khi compile thì jvm sẽ load vào vung chứa riêng (k phai là stack hay heap) và biết địa chỉ.
+
+
+7.- Một phương thức final có thể kế thừa được không ?
+     Vẫn kế thừa bình thường nhưng k cho phép overide
+
+8.- Phân biệt hai từ khóa This và Super
+
+    This: tham chiếu đến đối tượng hiện tại
+    Super: Tham chiếu đến đối tượng cha

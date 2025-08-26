@@ -1,0 +1,37 @@
+- Phân biệt kiểu dữ liệu nguyên thủy và kiểu dữ liệu object.
+- Có thể chuyển đổi giữa hai kiểu dữ liệu này không ?
+- Có thể so sánh hai kiểu dữ liệu này với nhau không?
+- Giá trị khi khởi tạo biến với hai loại kiểu dữ liệu này là gì?
+
+
+
+1.Phân biệt kiểu dữ liệu nguyên thủy và kiểu dữ liệu object.
+    + Kiểu dữ liệu nguyên thủy:
+        - là kiểu dữ liêu cơ bản được cung cấp sẵn : byte, short, int, long, float, double, char, boolean.
+        phải gán value khi khai báo biến, không thể nhận giá trị null.
+        - được lưu trữ trực tiếp trong bộ nhớ stack. (biến + value)
+        - có kích thước cố định.
+
+    + Kiểu dữ liệu Object:
+        - là kiểu dữ liệu được xây dựng dựa trên class (String, ArrayList ...) - có thể nhận giá trị null.
+        - value được lưu trữ trong bộ nhớ heap, biến và địa chỉ tham chiếu được lưu trong stack.
+        - có kích thước linh hoạt, phụ thuộc vào nội dung bên trong.
+
+2.Có thể chuyển đổi giữa hai kiểu dữ liệu này không ?
+   + Chuyển đổ từ tham trị -> tham chiếu: boxing (int -> Integer)
+   + Chuyển đổi từ tham chiếu -> tham trị: unboxing (Integer -> int)
+        - lưu ý : tham chiếu null -> tham trị lỗi null pointer exception.
+
+3.Có thể so sánh hai kiểu dữ liệu này với nhau không?
+    + Kiểu nguyên thủy: so sánh trực tiếp giá trị (==, !=, >, < ...)
+    + Kiểu Object: so sánh địa chỉ tham chiếu (==, !=)
+      - so sánh giá trị bên trong: dùng phương thức equals() (nếu chưa override thì so sánh địa chỉ tham chiếu)
+      - so sánh tự nhiên: dùng phương thức compareTo() (nếu chưa override thì lỗi ClassCastException)
+
+4.Giá trị khi khởi tạo biến với hai loại kiểu dữ liệu này là gì?
+
+    + Kiểu nguyên thủy: bắt buộc phải có giá trị khi khai báo. biến và value được lưu trong stack.
+    + Kiểu Object: có thể nhận giá trị null. bến và địa chỉ tham chiếu được lưu trong stack, va lưu được lưu trong heap.
+        - nếu chưa gán giá trị thì địa chỉ tham chiếu sẽ là null.
+        - nếu 1 biến mới có value = value có sẵn thì sẽ tham chiếu tới value đó trong heap - không tạo mới.
+        - 1 obj dùng từ khóa new thì tạo mới 1 vùng nhớ trong heap.

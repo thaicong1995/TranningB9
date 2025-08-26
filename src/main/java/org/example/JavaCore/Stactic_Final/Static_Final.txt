@@ -1,0 +1,31 @@
+- Thế nào là static ? Phương thức, thuộc tính khai báo bằng từ khóa static được sử dụng khi nào ? Làm thế nào để truy cập được tới phương thức, thuộc tính static
+- Thế nào là final ? Khai báo 1 biến final khác gì với static, biến khai báo bằng final có thể chỉnh sửa được không ? Nếu được cho ví dụ minh họa.
+
+1. Thế nào là static ? Phương thức, thuộc tính khai báo bằng từ khóa static được sử dụng khi nào ?
+    Làm thế nào để truy cập được tới phương thức, thuộc tính static
+    + là từ khóa khai báo thành phần của lớp, thuộc về lớp không thuộc về đối tượng cụ thể.
+
+    + Khi biến, method dùng chung cho tất cả.
+    + Khi muốn gọi method mà không cần tạo đối tượng - VD: Các lớp utils dùng chung
+    + Khởi tạo tài nguyên chung cho toàn ứng dụng
+
+    ** Lưu ý : static không thể truy cập trực tiếp biến non-static.
+                static không thể kế thừa 1 class bình thường
+
+    + Có 4 loại static:
+        - static variable (biến static)
+        - static method (phương thức static)
+        - static block (khối static)
+        - static nested class (lớp lồng nhau static)
+
+
+2. Thế nào là final ?
+ Khai báo 1 biến final khác gì với static, biến khai báo bằng final có thể chỉnh sửa được không ?
+ Nếu được cho ví dụ minh họa.
+
+    + Final có nghĩa là khi đã gán giá trị thì không thể thay đổi.
+
+    + 1 Biến final - không cho gán lại giá trị - Mỗi Object có thể có 1 bản sao
+
+    + 1 Biến static: có thể gán lại giá trị - 1 bản sao duy nhât;
+

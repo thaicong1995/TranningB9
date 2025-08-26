@@ -1,0 +1,36 @@
+- Tìm hiểu về các đặc điểm và tính chất của String trong java
+- Có bao nhiêu cách để tạo 1 biến String
+- Tìm hiểu về String pool?
+- Làm sao để so sánh hai chuỗi trong java
+
+
+1. các đặc điểm và tính chất của String trong java
+    + là 1 giá trị bất biến - không thay đổi khi được tạo. - Khi nối, cắt sẽ tạo ra 1 vùng nhớ mới.
+    + Là 1 chuỗi ký tự bao bọc "" - "abc"  <=> char[] data = {'a', 'b', 'c'};
+    + String là 1 class đặc biệt - có thể dùng toán tử + để nối chuỗi
+    + String implements interface Comparable - có thể so sánh tự nhiên.
+    + String là 1 object - tham chiếu null được.
+    + String là 1 class final - không thể kế thừa.
+
+2. Có bao nhiêu cách để tạo 1 biến String
+    +C1: Tạo String trong String poll (String a = "abc";)
+    +C2: Tạo String trong heap (String b = new String("abc");)
+
+3. Tìm hiểu về String pool?
+    + String pool là 1 vùng nhớ đặc biệt trong heap dùng để lưu trữ các value kiểu String.
+    + Khi tạo String bằng cách gán trực tiếp (C1) thì JVM sẽ kiểm tra trong String pool đã có value đó chưa.
+        - Nếu có rồi thì biến sẽ tham chiếu tới value đó.
+        - Nếu chưa có thì tạo mới value trong String pool và biến sẽ tham chiếu tới value đó.
+    + Khi tạo String bằng từ khóa new (C2) thì sẽ tạo mới value trong heap, không quan tâm String pool
+        - Nếu cần kiểm tra trong pool hay chưa dùng .intern().
+    + Việc sử dụng String pool giúp tiết kiệm bộ nhớ khi có nhiều biến cùng value.
+
+4. Làm sao để so sánh hai chuỗi trong java
+    + Dùng toán tử == hoặc != để so sánh địa chỉ tham chiếu.
+    + Dùng phương thức equals() để so sánh giá trị bên trong (nếu chưa override thì so sánh địa chỉ tham chiếu)
+    + Dùng phương thức compareTo() để so sánh tự nhiên ( nếu chưa override thì lỗi ClassCastException)
+    + Dùng phương thức equalsIgnoreCase() để so sánh giá trị bên trong không phân biệt hoa thường.
+
+
+
+
