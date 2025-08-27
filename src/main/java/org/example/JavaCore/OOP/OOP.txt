@@ -62,7 +62,7 @@
 
 
 7.- Một phương thức final có thể kế thừa được không ?
-     Vẫn kế thừa bình thường nhưng k cho phép overide
+    Vẫn kế thừa bình thường nhưng k cho phép overide
 
 8.- Phân biệt hai từ khóa This và Super
 

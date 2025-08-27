@@ -1,0 +1,11 @@
+- Tìm hiểu về mục đích, cách thức triển khai, ưu điểm của:
++ Signleton
++ Factory method
+
+- Làm demo minh họa cho từng pattern
+
+
+Singleton: 1 class được khai báo là singleton khi chương trình chạy sẽ tao 1 instace duy nhất trong vòng đời ứng dụng
+
+Factory medthod: Ẩn dấu logic bên trong và thông qua 1 lơp interface .
+    VD.. Triển khai các service - để sử dụng qua 1 interface để gọi thay vì gọi trực tiếp lớp triển khai

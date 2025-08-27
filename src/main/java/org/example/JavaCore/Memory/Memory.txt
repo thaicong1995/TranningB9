@@ -1,0 +1,57 @@
+- Thế nào là cấp phát tĩnh và cấp phát động ?
+- Phân biệt bộ nhớ heap và bộ nhớ stack ?
+
+
+1. Cấp phát tĩnh (Static Allocation)
+
+    Vùng nhớ được cấp ngay khi biên dịch / chương trình load.
+
+    Kích thước cố định, không thay đổi trong quá trình chạy.
+
+    Ví dụ: biến toàn cục, biến static, hằng số.
+
+        Ưu điểm: nhanh, không cần quản lý nhiều.
+        Nhược điểm: kém linh hoạt, chiếm bộ nhớ ngay cả khi không dùng.
+
+2. Cấp phát động (Dynamic Allocation)
+
+    Vùng nhớ được cấp khi chạy chương trình (runtime).
+
+    Kích thước có thể thay đổi linh hoạt.
+
+    Ví dụ: new trong Java, malloc() trong C.
+
+        Ưu điểm: linh hoạt, dùng bao nhiêu xin bấy nhiêu.
+        Nhược điểm: tốn chi phí quản lý, dễ gây memory leak nếu không giải phóng đúng (C/C++).
+
+3. Phân biệt Heap và Stack
+
+Stack
+
+    Lưu biến cục bộ, tham số hàm.
+
+    Quản lý theo LIFO (vào sau ra trước).
+
+    Tự động cấp phát và giải phóng khi ra khỏi scope.
+
+    Nhanh nhưng dung lượng nhỏ.
+
+Heap
+
+    Lưu đối tượng tạo bằng new.
+
+    Do lập trình viên / GC quản lý.
+
+    Dung lượng lớn, linh hoạt.
+
+    Truy xuất chậm hơn stack.
+
+    Tóm ngắn:
+
+Tĩnh: compile time, cố định.
+
+Động: runtime, linh hoạt.
+
+Stack: nhanh, tự quản lý, lưu local.
+
+Heap: lớn, do lập trình viên/GC quản, lưu object.

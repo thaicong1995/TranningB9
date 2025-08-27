@@ -1,0 +1,54 @@
+- Process là gì ?
+- Thread là gì ?
+- Có bao nhiêu cách để tạo 1 thread trong java ? Khác biệt giữa việc sử dụng cách cách đó gì ?
+- Thế nào là multi thread ? Sử dụng multi thread mang lại ưu nhược điểm gì ?
+- Làm thế nào để biết được 1 thread, multi thread đã hoàn thành hay chưa?
+- Có giới hạn việc tạo ra bao nhiêu thread trong 1 ứng dụng java hay không?
+
+
+1- Process là gì?
+    - là 1 tiến trình chạy trong HĐH - VD khi chạy 1 prj java thì nó là 1 process.
+    - mỗi process có bộ nhớ riêng (heap, stack ..) và chạy độc lập với nhau
+
+2- Thread là gì ?
+    - Thread là đơn vị nhỏ nhất (lập lịch - schendule) của 1 process. Trong process có thể có nhiều thread.
+
+    - Các thread dùng chung bộ nhớ của process (heap, code) nhưng có stack riêng.
+
+    - Nhẹ hơn process (tạo thread nhanh, ít tốn tài nguyên).
+
+    - Giao tiếp dễ dàng (vì dùng chung bộ nhớ) → nhưng dễ gặp lỗi thread-safe nếu không đồng bộ.
+
+3. - Có bao nhiêu cách để tạo 1 thread trong java ? Khác biệt giữa việc sử dụng cách cách đó gì ?
+
+    Có 2 cách :
+
+        C1: extend Thread - đơn giản dễ viết. nhưng sẽ không thể extend 1 class khác được.
+
+                - gắn chặt logic vào luôn trong class thread.
+
+        C3: impl Runable - không bị hạn chế kế thừa - Code tách biệt giữa logic.
+
+4.- Thế nào là multi thread ? Sử dụng multi thread mang lại ưu nhược điểm gì ?
+
+    - Một tiến trình (process) có thể tạo ra nhiều luồng (thread),
+
+     mỗi luồng chạy song song hoặc đồng thời để thực hiện các công việc độc lập.
+
+    - Ưu điểm : xử lý nhanh chóng không phụ thuộc vào luồng chính. - phù hợp các tác vụ I/O
+
+    - Nhược điểm: dễ gây ra lỗi - Deadlock (- giữ chéo tài nguyên - chờ nhau không chạy)
+
+                            Race Condition - Sủ dụng chung 1 tài nguyên trong 1 thời điểm -> sai kêt quả
+
+                - Tốn tài nguyên ram khi có nhiều thread.
+
+                - Nhiều thread làm giảm context switch - điều phối task để xử lý của Cpu
+
+5 - Làm thế nào để biết được 1 thread, multi thread đã hoàn thành hay chưa?
+
+    Dùng .join() để chờ các thread hoàn thành công việc thì main mới tiếp tục chạy - chưa hoàn thành thì chương trình treo
+
+6- Có giới hạn việc tạo ra bao nhiêu thread trong 1 ứng dụng java hay không?
+
+    Nên giới hạn thread của CPU

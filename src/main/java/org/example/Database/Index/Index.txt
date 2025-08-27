@@ -1,0 +1,53 @@
+- Phân biệt cluester index và non-cluster index ? So sánh về perfomance khi sử dụng 2 loại index này ?
+    Giải thích nguyên nhân
+- Có giới hạn việc đánh bao nhiêu index trong 1 table hay không ? Giải thích
+- Việc đánh index dựa trên cơ sở nào ?
+- Làm thế nào để biết 1 câu query đã sử dụng index hay chưa ?
+
+
+1- Phân biệt cluester index và non-cluster index ?
+    So sánh về perfomance khi sử dụng 2 loại index này ? Giải thích nguyên nhân
+
+
+   cluester:  Đặc điểm:
+
+                  Leaf node chính là data page của bảng → lưu toàn bộ row.
+
+                  Một bảng chỉ có 1 clustered index, thường là primary key.
+
+                  Dữ liệu vật lý trên disk sắp xếp theo key của clustered index.
+
+               Ưu điểm:
+
+                   Tra cứu theo key rất nhanh → 1 lần đọc page là lấy được toàn bộ row.
+
+                   Tốt cho range queries (BETWEEN, <, >).
+
+              Nhược điểm:
+
+                  Chèn/sửa/xóa có thể gây page split → tốn I/O.
+
+                  Không thể có nhiều clustered index cho 1 bảng.
+
+
+   non-cluster: Đặc điểm:
+
+                    Leaf chỉ chứa key của index + pointer tới clustered index (PK).
+
+                    Có thể có nhiều non-clustered index trên 1 bảng.
+
+                    Dữ liệu vật lý trên disk không sắp xếp theo key này.
+
+               Ưu điểm:
+
+                   Hỗ trợ tìm kiếm nhiều cột, nhiều loại query.
+
+                   Có thể tạo nhiều index trên 1 bảng.
+
+               Nhược điểm:
+
+                   Khi query cần lấy dữ liệu đầy đủ row → phải theo pointer tới clustered index → 1 lần đọc index + 1 lần đọc data page.
+
+                   Chèn/sửa/xóa index tốn I/O cho tất cả index liên quan.
+
+

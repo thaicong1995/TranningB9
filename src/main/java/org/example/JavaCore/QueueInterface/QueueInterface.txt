@@ -1,0 +1,63 @@
+- Nêu các đặc điểm của Queue Interface, Dequeue Interface
+- Kể ra các class triển khai từ Queue Interface, Dequeue Interface , phân biệt trường hợp sử dụng tương ứng
+
+1.- Nêu các đặc điểm của Queue Interface, Dequeue Interface
+ . Queue Interface
+
+    Đặc điểm:
+
+    Thuộc Java Collections Framework (java.util.Queue).
+
+    Định nghĩa một hàng đợi (FIFO – First In First Out).
+
+    Chỉ cho phép thao tác thêm, lấy hoặc kiểm tra phần tử ở đầu hoặc cuối.
+
+    Thường dùng cho hàng đợi công việc, in, xử lý task.
+
+    Một số phương thức quan trọng:
+
+    add(E e) / offer(E e) → thêm phần tử vào queue.
+
+    remove() / poll() → lấy và loại bỏ phần tử đầu hàng đợi.
+
+    element() / peek() → lấy phần tử đầu hàng đợi mà không xóa.
+
+    Không được phép dùng index vì không phải List.
+
+ . Deque Interface
+
+    Đặc điểm:
+
+    Thuộc java.util.Deque (Double Ended Queue – hàng đợi 2 đầu).
+
+    Cho phép thêm/xóa phần tử cả ở đầu và cuối.
+
+    Kết hợp được Queue + Stack, tức bạn có thể dùng nó như:
+
+    Queue (FIFO) → dùng addLast() + removeFirst()
+
+    Stack (LIFO) → dùng addFirst() + removeFirst()
+
+    Một số phương thức quan trọng:
+
+    addFirst(E e), addLast(E e) → thêm phần tử.
+
+    removeFirst(), removeLast() → xóa phần tử.
+
+    peekFirst(), peekLast() → xem phần tử mà không xóa.
+
+
+2.
+
+
+    1. Các class triển khai từ Queue Interface
+
+    LinkedList	Có thể làm Queue hoặc Deque. Thêm/xóa nhanh ở đầu/cuối. Thường dùng khi cần hàng đợi linh hoạt, kích thước thay đổi liên tục.
+    PriorityQueue	Hàng đợi theo thứ tự ưu tiên (không theo FIFO). Thường dùng trong thuật toán tìm đường ngắn nhất (Dijkstra), hệ thống task có độ ưu tiên.
+    ArrayDeque	Có thể dùng như Queue hoặc Deque, nhanh hơn LinkedList khi thao tác đầu/cuối. Thích hợp hàng đợi đơn giản trong bộ nhớ liên tục.
+
+    2. Các class triển khai từ Deque Interface
+
+    LinkedList	Có thể làm cả Queue và Deque. Dùng khi cần thêm/xóa ở cả đầu và cuối.
+    ArrayDeque	Dùng khi muốn stack hoặc queue tốc độ cao, thao tác ở đầu/cuối nhanh hơn LinkedList.
+    ConcurrentLinkedDeque	Dùng trong môi trường đa luồng, thao tác không khóa.

@@ -1,0 +1,47 @@
+- Nêu ra các đặc điểm Map Interface
+- Kể ra các class triển khai từ Map Interface
+- Phân biệt rõ trường hợp sử dụng của từng class đó
+
+1 Nêu ra các đặc điểm Map Interface
+    Lưu trữ theo cặp key-value
+
+        Mỗi phần tử trong Map là một entry: (key, value)
+
+        Key duy nhất, value có thể trùng lặp.
+
+    Key duy nhất
+
+        Không được phép có 2 key giống nhau.
+
+        Thêm key trùng sẽ ghi đè value cũ.
+
+    Cho phép null (tùy implementation)
+
+        HashMap → cho phép 1 key null và nhiều value null
+
+        Hashtable → không cho phép null
+
+        TreeMap → key null không được, value null được
+
+    Duy trì thứ tự phụ thuộc implementation
+
+        HashMap → không duy trì thứ tự
+
+        LinkedHashMap → duy trì thứ tự chèn
+
+        TreeMap → duy trì thứ tự sắp xếp theo key
+
+    Không thừa kế từ Collection
+
+        Map không phải là Collection, nhưng có phương thức keySet(), values(), entrySet() để duyệt.
+
+2. - Kể ra các class triển khai từ Map Interface
+
+    HashMap: Nhanh, dựa trên hash table	 - Key có thể null
+
+    LinkedHashMap:	Như HashMap nhưng duy trì thứ tự chèn - Key có thể null  -
+
+    TreeMap: Sắp xếp theo key (Comparable hoặc Comparator), không cho phép key null - Không an toàn đa luồng
+
+    ConcurrentHashMap: Thread-safe, hiệu năng cao - k cho phép null - an toàn đa luồng
+

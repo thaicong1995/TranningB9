@@ -1,0 +1,28 @@
+- Phân biệt throw và throws
+- Thế nào là checked và unchecked exception
+- try catch , try with resource khác nhau như thế nào ?
+- Làm thế nào để tạo được 1 custom exception ?
+
+
+1. Phân biệt throw và throws
+
+throw: dùng để ném ra 1 exception cụ thể  - throw new ... () - thường trong runtime - lỗi logic
+
+throws: dùng trong method - method này có thể có exception - public void display() throws + loại exception{}
+
+2. Thế nào là checked và unchecked exception
+ checked : là lỗi xảy ra khi compile - xử lý dùng try-catch hoặc throws
+ unchecked: lõi xảy ra trong quá trinhd runtime - thường là lỗi logic - throw new.
+
+3.- try catch , try with resource khác nhau như thế nào ?
+
+    try-catch,  try with resource  đều để xử lý ngoại lệ -
+    try-catch - đóng tài nguyên 1 cách thủ công - không cẩn thận dễ gây ra memoryleak; thường sẽ có finally để xử lý.
+    try with resource - hỗ trợ auto close.. dù có exception hay không đều tự động
+
+4. Làm thế nào để tạo được 1 custom exception ?
+    - Tạo 1 lớp abtract Base- kế thừa RumtimException hoặc Exception
+    - Tạo 1 lớp - bên trong có các inner static class kế thừa Base - Custom lỗi theo ý;
+    - Cách dùng.. throw new Class.Staticclass() cho lỗi runtime;
+    - Catch(Exception e) - sẽ tự động bắt các lỗi ở trong method và trả ra đúng lỗi -.
+

@@ -1,0 +1,74 @@
+- Phân biệt synchronous vs asynchronous
+- Phân biệt trường hợp sử dụng, ưu nhược điểm của async và sync
+- Tìm hiểu từ khóa : synchronized trong java
+
+
+1- Phân biệt synchronous vs asynchronous
+    + Synchronous (Đồng bộ)
+
+    Thực thi tuần tự, công việc này xong -> mới đến công việc khác trên thread main.
+
+    Dễ hiểu, dễ debug, luồng xử lý rõ ràng.
+
+    Nhưng có thể gây chậm trễ nếu task nào đó mất nhiều thời gian.
+
+    + Asynchronous (Bất đồng bộ)
+
+    Công việc có thể khởi chạy mà không cần chờ kết thúc, chương trình vẫn chạy các task khác trên các thread khác.
+
+    Thường được triển khai bằng Thread, Future, CompletableFuture, Callback, Reactor…
+
+    Tận dụng CPU tốt hơn, phù hợp với các tác vụ chờ I/O.
+
+    Nhưng code phức tạp hơn, khó debug hơn.
+
+2 - Phân biệt trường hợp sử dụng, ưu nhược điểm của async và sync
+
+    Synchronous (Đồng bộ)
+
+        Thực thi tuần tự, tác vụ sau chỉ bắt đầu khi tác vụ trước kết thúc.
+
+        Ưu điểm: dễ hiểu, dễ debug, phù hợp khi các bước phụ thuộc nhau.
+
+        Nhược điểm: hiệu năng thấp nếu có nhiều I/O, gây nghẽn thread.
+
+        VD: task sau cần dữ liệu của task trước để thực hiện tiếp chương trình
+
+    Asynchronous (Bất đồng bộ)
+
+        Tác vụ có thể chạy song song/không cần chờ nhau; kết quả xử lý qua callback/Future.
+
+        Ưu điểm: tận dụng tài nguyên, nhanh hơn trong I/O, không chặn thread chính.
+
+        Nhược điểm: code phức tạp, khó debug, không phù hợp khi công việc phụ thuộc nhau.
+
+        VD - các tác vụ xử lý tính đồng thời - xử lý nhiều request cùng 1 lúc
+           - hoặc chuck nhiều video 1 lúc lên client
+
+
+
+3 - Tìm hiểu từ khóa : synchronized trong java
+    synchronized: là từ khóa đánh dấu các tác vụ chạy đồng bộ - tại 1 thời điểm chỉ có 1 thread được truy cập vào tài nguyên
+
+      - synchronized method
+
+        public synchronized void abc(){
+            //todo
+        }
+
+      - synchronized block
+
+        public void abc(){
+            synchronized(this){
+                // todo
+            }
+        }
+
+      - synchronized static
+
+      public static synchronized void abc() {
+          // todo
+      }
+
+
+    -- thường dùng trong môi trường mutilthread tránh gây tranh chấp tài nguyên - dữ liệu không nhất quán

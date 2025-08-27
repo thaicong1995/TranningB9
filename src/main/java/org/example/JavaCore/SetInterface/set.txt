@@ -1,0 +1,45 @@
+- Nêu ra các đặc điểm Set Interface
+- Kể ra các class triển khai từ Set Interface
+- Phân biệt rõ trường hợp sử dụng của từng class đó
+
+
+1. - Nêu ra các đặc điểm Set Interface
+
+    Không chứa phần tử trùng lặp (Unique elements)
+
+        Mỗi phần tử chỉ xuất hiện 1 lần.
+
+        Nếu bạn thêm phần tử trùng lặp, thao tác add() sẽ trả về false.
+
+    Không duy trì thứ tự phần tử (tùy implementation)
+
+        HashSet → không đảm bảo thứ tự
+
+        LinkedHashSet → duy trì thứ tự chèn
+
+        TreeSet → duy trì thứ tự tự nhiên hoặc Comparator
+
+    Cho phép null (tùy implementation)
+
+        HashSet và LinkedHashSet → cho phép 1 phần tử null
+
+        TreeSet → không cho null nếu dùng so sánh tự nhiên, vì compareTo(null) sẽ ném NullPointerException.
+
+    Không cho phép duplicate
+
+        Set tự động loại bỏ các phần tử trùng lặp.
+
+2. - Kể ra các class triển khai từ Set Interface
+
+     Set<String> set = new HashSet<String>();
+     Set<String> set1 = new LinkedHashSet<String>();
+     Set<String> set2 = new TreeSet<>();
+
+
+3.- Phân biệt rõ trường hợp sử dụng của từng class đó
+    HashSet: Khi bạn cần kiểm tra duy nhất các phần tử, không quan tâm thứ tự, và cần hiệu năng cao.
+
+    LinkedHashSet: Khi bạn cần duy trì thứ tự chèn hoặc muốn duyệt các phần tử theo thứ tự thêm vào.
+
+    TreeSet: Khi bạn cần các phần tử tự sắp xếp, ví dụ để lấy phần tử nhỏ nhất/lớn nhất nhanh,
+            hoặc duyệt theo thứ tự tự nhiên hoặc Unicode.

@@ -1,0 +1,25 @@
+- Nêu ra các đặc điểm List Interface
+- Kể ra các class triển khai từ List Interface
+- Phân biệt rõ trường hợp sử dụng của từng class đó
+
+1.- Nêu ra các đặc điểm List Interface
+    - là 1 interface thuộc collection framework.
+    - cho phép trùng lặp;
+    - truy cập theo index;
+    - hỗ trợ generic chỉ định kiểu dữ liệu phần tử;
+    - có thể thay đổi kích thước.
+    - hỗ trợ sẵn các phương thức quan trọng: add, remove, indexof
+    - cho phép null
+
+
+2.- Kể ra các class triển khai từ List Interface
+    ArrayList; LinkedList; Stack
+
+3 - Phân biệt rõ trường hợp sử dụng của từng class đó
+
+    -ArrayList - Dynamic Array - Hầu hết các trường hợp - VD lấy 1 list data gửi lên FE ..
+
+    -LinkedList  - thêm đầu và cuối nhanh - tìm kiếm chậm vì phải duyệt từ phần tử đầu hoặc cuối
+        VD: dùng nó như 1 cấu trúc queue hoặc stack. cho việc in ấn.
+
+    _ Stack: Nó tuân theo cơ chế LIFO (Last-In, First-Out) - Dùng khi triển khai chức năng undo/redo, duyệt 1 cấu trúc tree.

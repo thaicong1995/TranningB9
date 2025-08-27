@@ -1,0 +1,24 @@
+ String fileName = "C:\Users\PC\OneDrive\Máy tính\log.txt";
+        int totalLines = 5_000_000;  // 100 log lines
+        String[] levels = {"INFO", "WARN", "ERROR", "DEBUG"};
+        String[] services = {"AuthService", "UserService", "PaymentService", "OrderService"};
+        Random random = new Random();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (int i = 1; i <= totalLines; i++) {
+                LocalDateTime timestamp = LocalDateTime.now();
+                String level = levels[random.nextInt(levels.length)];
+                String service = services[random.nextInt(services.length)];
+                String message = "This is log message number " + i;
+
+                String logLine = String.format("[%s] [%s] [%s]- %s",
+                        timestamp.format(formatter), level, service, message);
+
+                writer.write(logLine);
+                writer.newLine();
+            }
+            System.out.println("Generated " + totalLines + " log lines into " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
