@@ -16,7 +16,7 @@ public class Listmain {
 //            }
 //        }
 //
-
+         List<String> list2 = new ArrayList(list);
 
 
         Iterator<String> iterator = list.iterator();

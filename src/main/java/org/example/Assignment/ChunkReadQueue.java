@@ -1,63 +1,61 @@
 package org.example.Assignment;
 
 import java.io.*;
-import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class ChunkRead {
-    private final String filePath;
-    private  final int chunkSize;
-//    public static Queue<List<String>> queue = new ArrayDeque<>();
+public class ChunkReadQueue implements IChunkReadQueue {
 
-    public ChunkRead(String filePath, int chunkSize) {
-        this.filePath = filePath;
-        this.chunkSize = chunkSize;
+    public static Queue<List<String>> queue = new LinkedBlockingQueue<>(50);
 
-    }
-
-    public List<List<String>> read() throws FileNotFoundException {
-        List<List<String>> chunks = new ArrayList<>();
+    //region read
+    public Queue<List<String>> readFileChunks(int chunkSize, String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
             List<String> bf = new ArrayList<>();
             String line;
+            List<String> lines = Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8);
+
+            // Đọc toàn bộ file
             while ((line = br.readLine()) != null) {
                 bf.add(line);
                 if (bf.size() == chunkSize) {
-                    chunks.add(new ArrayList<>(bf));
+                    queue.add(new ArrayList<>(bf));
                     bf.clear();
                 }
             }
 
+            // Giới hạn số dòng cần lấy từ dưới lên
+//            for (int i = lines.size() - 1; i >= 0; i--) {
+//                bf.add(lines.get(i));
+//                if (bf.size() == chunkSize) {
+//                    queue.add(new ArrayList<>(bf));
+//                    bf.clear();
+//                }
+//            }
+
             if (!bf.isEmpty()) {
-                chunks.add(new ArrayList<>(bf));
+                queue.add(new ArrayList<>(bf));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return chunks;
+        return queue;
     }
+    //endregion read
 
-    public List<String>  processChunk( List<String> chunkData, String level,
-                                              LocalDateTime from, LocalDateTime to)
-            throws FileNotFoundException {
-        if ( level != null && !level.isEmpty() ) {
-            var logs = findByLevel(level,chunkData);
-            System.out.println( level +"----" + logs);
-            return logs;
-        }
-        else if (from.isBefore(to)) {
-            var logs = findByDate(chunkData, from, to);
-            System.out.println( level +"----" + logs);
-            return logs;
-        }
-        else {
-            return null;
-        }
+    //region processChunk
+    public List<String>  processChunk(List<String> chunkData, String level,
+                                      LocalDateTime from, LocalDateTime to, String message) {
+        return filterLog(chunkData, level, from, to, message);
     }
+    //endregion processChunk
 
+    //region writeToFile
     public void writeToFile(List<String> logsFilter, String outputPath){
         synchronized (this) {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath, true))) {
@@ -70,7 +68,9 @@ public class ChunkRead {
             }
         }
     }
+    //endregion writeToFile
 
+    //region createFile
     public String CreateFile(String outputFolder, String fileName) {
         File folder = new File(outputFolder);
         if (!folder.exists()) {
@@ -99,6 +99,44 @@ public class ChunkRead {
         }
         return file.getAbsolutePath();
     }
+    //endregion createFile
+
+    //region filterLog
+    private List<String> filterLog(List<String> chunkData,
+                                   String level,
+                                   LocalDateTime from,
+                                   LocalDateTime to,
+                                   String message) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+        List<String> result = chunkData;
+
+        if (message != null && !message.isEmpty()) {
+            result = findByMessage(result, message);
+        }
+
+        if (from != null && to != null) {
+            result = findByDate(result, from, to);
+        }
+
+        if (level != null && !level.isEmpty()) {
+            result = findByLevel(result, level);
+        }
+
+        return result;
+    }
+    //endregion filterLog
+
+    private List<String> findByMessage (List<String> chunkData, String message) {
+         return  chunkData.stream()
+                 .filter(line -> {
+                     int dashIndex = line.indexOf('-');
+                     if (dashIndex == -1) return false;
+                     String msgPart = line.substring(dashIndex + 1).trim();
+                     return msgPart.contains(message);
+                 })
+                 .toList();
+    }
 
     private List<String> findByDate(List<String> chunkData, LocalDateTime from, LocalDateTime  to ) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -111,8 +149,7 @@ public class ChunkRead {
         }).toList();
     }
 
-
-    private List<String> findByLevel(String level, List<String> chunkData) {
+    private List<String> findByLevel(List<String> chunkData,String level) {
         switch (level.toUpperCase()) {
             case "INFO":
                 return chunkData.stream()
@@ -134,7 +171,5 @@ public class ChunkRead {
                 " level " + level + ", count = " + chunkData.size());
 
         return chunkData;
-
     }
-
 }
