@@ -21,45 +21,67 @@ public class QueueInterface {
         deque2.add(1);
         deque2.add(2);
         deque2.add(3);
+//
+//        Runnable addTask = () -> {
+//            for (int i = 0; i < 1000; i++) {
+//                queue1.add(i); // sử dụng synchron để đồng bộ các luồng
+////                synchronized(deque2) {
+////                    System.out.println("Thread add : " + Thread.currentThread().getName());
+////                    deque2.add(i);
+////                }
+//            }
+//        };
+//
+//        Runnable removeTask = () -> {
+//            for (int i = 0; i < 1000; i++) {
+//                queue1.poll(); // Lấy và xóa phần tử đầu, trả về null nếu rỗng
+////                synchronized(deque2) {
+////                    System.out.println("Thread poll : " + Thread.currentThread().getName());
+////                    deque2.poll();
+////                }
+//            }
+//        };
+//
+//        Thread t1 = new Thread(addTask);
+//        Thread t2 = new Thread(removeTask);
+//        Thread t3 = new Thread(addTask);
+//        Thread t4 = new Thread(removeTask);
+//
+//        t1.start();
+//        t2.start();
+//        t3.start();
+//        t4.start();
+//
+//        t1.join();
+//        t2.join();
+//        t3.join();
+//        t4.join();
+//
+//        System.out.println("Kích thước cuối: " + deque1.size());
 
-        Runnable addTask = () -> {
-            for (int i = 0; i < 1000; i++) {
-                queue1.add(i); // sử dụng synchron để đồng bộ các luồng
-//                synchronized(deque2) {
-//                    System.out.println("Thread add : " + Thread.currentThread().getName());
-//                    deque2.add(i);
-//                }
-            }
-        };
+        Queue<Integer> Arqueue = new ArrayDeque<>();
+        Queue<Integer> llqueue = new LinkedList<>();
+       for (int i = 1; i < 18; i++) {
+           Arqueue.add(i);
+       }
 
-        Runnable removeTask = () -> {
-            for (int i = 0; i < 1000; i++) {
-                queue1.poll(); // Lấy và xóa phần tử đầu, trả về null nếu rỗng
-//                synchronized(deque2) {
-//                    System.out.println("Thread poll : " + Thread.currentThread().getName());
-//                    deque2.poll();
-//                }
-            }
-        };
+        System.out.println("size: " + Arqueue.size());
 
-        Thread t1 = new Thread(addTask);
-        Thread t2 = new Thread(removeTask);
-        Thread t3 = new Thread(addTask);
-        Thread t4 = new Thread(removeTask);
+        System.out.println("remove: " +  Arqueue.poll());
 
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
+        System.out.println("size: " + Arqueue.size());
 
-        t1.join();
-        t2.join();
-        t3.join();
-        t4.join();
+        System.out.println("last: " + ((ArrayDeque<Integer>) Arqueue).peekLast());
 
-        System.out.println("Kích thước cuối: " + deque1.size());
+        System.out.println("size: " + Arqueue.size());
 
+        System.out.println("poll: " + ((ArrayDeque<Integer>) Arqueue).remove());
 
+        System.out.println("size: " + Arqueue.size());
+
+//        System.out.println(Arqueue.poll());
+//
+//        System.out.println("Arqueue: " + Arqueue.size());
 
     }
 }

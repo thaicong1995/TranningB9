@@ -46,18 +46,21 @@
 
     peekFirst(), peekLast() → xem phần tử mà không xóa.
 
-
 2.
 
 
     1. Các class triển khai từ Queue Interface
 
     LinkedList	Có thể làm Queue hoặc Deque. Thêm/xóa nhanh ở đầu/cuối. Thường dùng khi cần hàng đợi linh hoạt, kích thước thay đổi liên tục.
+
     PriorityQueue	Hàng đợi theo thứ tự ưu tiên (không theo FIFO). Thường dùng trong thuật toán tìm đường ngắn nhất (Dijkstra), hệ thống task có độ ưu tiên.
+
     ArrayDeque	Có thể dùng như Queue hoặc Deque, nhanh hơn LinkedList khi thao tác đầu/cuối. Thích hợp hàng đợi đơn giản trong bộ nhớ liên tục.
 
     2. Các class triển khai từ Deque Interface
 
     LinkedList	Có thể làm cả Queue và Deque. Dùng khi cần thêm/xóa ở cả đầu và cuối.
+
     ArrayDeque	Dùng khi muốn stack hoặc queue tốc độ cao, thao tác ở đầu/cuối nhanh hơn LinkedList.
+
     ConcurrentLinkedDeque	Dùng trong môi trường đa luồng, thao tác không khóa.

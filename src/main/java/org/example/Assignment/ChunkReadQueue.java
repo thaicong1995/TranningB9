@@ -1,5 +1,7 @@
 package org.example.Assignment;
 
+import org.example.Assignment.HandleException.CustomException;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,11 +17,13 @@ public class ChunkReadQueue implements IChunkReadQueue {
 
     //region read
     public Queue<List<String>> readFileChunks(int chunkSize, String filePath) {
+        if (chunkSize <= 0 || filePath == null || Files.notExists(Paths.get(filePath))) {
+            return  null;
+        }
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
             List<String> bf = new ArrayList<>();
             String line;
-            List<String> lines = Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8);
-
             // Đọc toàn bộ file
             while ((line = br.readLine()) != null) {
                 bf.add(line);
@@ -28,7 +32,6 @@ public class ChunkReadQueue implements IChunkReadQueue {
                     bf.clear();
                 }
             }
-
             // Giới hạn số dòng cần lấy từ dưới lên
 //            for (int i = lines.size() - 1; i >= 0; i--) {
 //                bf.add(lines.get(i));

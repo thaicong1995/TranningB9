@@ -1,5 +1,7 @@
 package org.example.Assignment;
 
+import org.example.Assignment.HandleException.CustomException;
+
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,94 +37,105 @@ public class AssignmentQueue {
            System.out.println("2 - Find by from-to date");
            System.out.println("3 - Find by message");
            System.out.print("Input: ");
-           int choice = Integer.parseInt(sc.nextLine());
+           int choice = 0;
+           try{
+               choice = Integer.parseInt(sc.nextLine());
+           }catch(NumberFormatException e){
+               System.out.println("Invalid input");
+           }
+
+
            switch (choice) {
                case 1 -> {
-                   System.out.print("Log level [INFO, WARN, ERROR]: ");
-                   String level = sc.nextLine();
+                   try{
+                       System.out.print("Log level [INFO, WARN, ERROR]: ");
+                       String level = sc.nextLine();
 
-                   if (!level.contains("INFO".toLowerCase())) {
-                       System.out.println("Log level [INFO, WARN, ERROR]");
-                       break;
-                   }else if (level.contains("WARN".toLowerCase())) {
-                       System.out.println("Log level [WARN, ERROR]");
-                       break;
-                   }else if (level.contains("ERROR".toLowerCase())) {
-                       System.out.println("Log level [ERROR]");
-                       break;
-                   }
-
-                   System.out.println("Inpur: 1 = Console, 2 = File");
-                   int outputMode = Integer.parseInt(sc.nextLine());
-                   long startTime = System.currentTimeMillis();
-                   Thread producer = new Thread(() ->{
-                       try {
-                           queueInstance.readFileChunks(chunkSize, filePath);
-                           ChunkReadQueue.queue.add(POISON_PILL);
-                           System.out.println(Thread.currentThread().getName());
-                       } catch (Exception e) {
-                           throw new RuntimeException(e);
+                       if (!level.contains("INFO".toLowerCase())) {
+                           System.out.println("Log level [INFO, WARN, ERROR]");
+                           break;
+                       }else if (level.contains("WARN".toLowerCase())) {
+                           System.out.println("Log level [WARN, ERROR]");
+                           break;
+                       }else if (level.contains("ERROR".toLowerCase())) {
+                           System.out.println("Log level [ERROR]");
+                           break;
                        }
-                   });
-                   producer.start();
 
-                   Thread consumer = new Thread(() ->{
-                       System.out.println(Thread.currentThread().getName());
-                       while(true){
-                           List<String> chunk =  ChunkReadQueue.queue.poll();
+                       Thread producer = new Thread(() ->{
+                           try {
+                               queueInstance.readFileChunks(chunkSize, filePath);
+                               ChunkReadQueue.queue.add(POISON_PILL);
+                               System.out.println(Thread.currentThread().getName());
+                           } catch ( CustomException.IOException  e) {
+                               System.out.println("Error reading file");
+                           }
+                       });
+                       producer.start();
+
+                       System.out.println("Inpur: 1 = Console, 2 = File");
+                       int outputMode = Integer.parseInt(sc.nextLine());
+                       long startTime = System.currentTimeMillis();
+
+                       Thread consumer = new Thread(() ->{
+                           System.out.println(Thread.currentThread().getName());
+                           while(true){
+                               List<String> chunk =  ChunkReadQueue.queue.poll();
 //                if(ChunkReadQueue.queue.isEmpty()){
 //                    try{Thread.sleep(1000);}catch(InterruptedException e){}
 //                }
-                           if(chunk == POISON_PILL) break;
-                           if(chunk != null){
-                               if (outputMode == 1) {
-                                   Thread worker = new Thread(() ->{
+                               if(chunk == POISON_PILL) break;
+                               if(chunk != null){
+                                   if (outputMode == 1) {
+                                       Thread worker = new Thread(() ->{
+                                           try {
+                                               var rs = queueInstance.processChunk(chunk, level,
+                                                       null, null, null);
+                                               System.out.println(Thread.currentThread().getName());
+                                               System.out.println(rs);
+                                           } catch (Exception e) {
+                                               throw new RuntimeException(e);
+                                           }
+                                       });
+                                       worker.start();
                                        try {
-                                           var rs = queueInstance.processChunk(chunk, level,
-                                                   null, null, null);
-                                           System.out.println(Thread.currentThread().getName());
-                                           System.out.println(rs);
-
-                                       } catch (Exception e) {
+                                           worker.join();
+                                       } catch (InterruptedException e) {
                                            throw new RuntimeException(e);
                                        }
-                                   });
-                                   worker.start();
-                                   try {
-                                       worker.join();
-                                   } catch (InterruptedException e) {
-                                       throw new RuntimeException(e);
-                                   }
-                               } else if (outputMode == 2) {
-                                   Thread worker = new Thread(() -> {
+                                   } else if (outputMode == 2) {
+                                       Thread worker = new Thread(() -> {
+                                           try {
+                                               var rs = queueInstance.processChunk(chunk, level,
+                                                       null, null, null);
+                                               System.out.println(Thread.currentThread().getName());
+                                               System.out.println(rs);
+                                               String outputFile = queueInstance.CreateFile(outputFolder, level);
+                                               queueInstance.writeToFile(rs, outputFile);
+                                           } catch (Exception e) {
+                                               throw new RuntimeException(e);
+                                           }
+                                       });
+                                       worker.start();
                                        try {
-                                           var rs = queueInstance.processChunk(chunk, level,
-                                                   null, null, null);
-                                           System.out.println(Thread.currentThread().getName());
-                                           System.out.println(rs);
-                                           String outputFile = queueInstance.CreateFile(outputFolder, level);
-                                           queueInstance.writeToFile(rs, outputFile);
-                                       } catch (Exception e) {
+                                           worker.join();
+                                       } catch (InterruptedException e) {
                                            throw new RuntimeException(e);
                                        }
-                                   });
-                                   worker.start();
-                                   try {
-                                       worker.join();
-                                   } catch (InterruptedException e) {
-                                       throw new RuntimeException(e);
                                    }
                                }
                            }
-                       }
-                   });
+                       });
 
-                   consumer.start();
-                   consumer.join();
-                   long endTime = System.currentTimeMillis();
-                   long totalTimeMs = endTime - startTime;
-                   double totalTimeSec = totalTimeMs / 1000.0;
-                   System.out.println("Total program time: " + totalTimeSec + " s");
+                       consumer.start();
+                       consumer.join();
+                       long endTime = System.currentTimeMillis();
+                       long totalTimeMs = endTime - startTime;
+                       double totalTimeSec = totalTimeMs / 1000.0;
+                       System.out.println("Total program time: " + totalTimeSec + " s");
+                   }catch (Exception e){
+                       throw new RuntimeException(e);
+                   }
                }
                case 2 -> {
                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -287,6 +300,8 @@ public class AssignmentQueue {
                    System.out.println("Input 1 - 2 - 3");
                }
            }
+
+           System.out.println("s");
        }
     }
 }
