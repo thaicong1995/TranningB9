@@ -19,7 +19,7 @@ public class AssignmentQueue {
         final String outputFolder = "C:\\Users\\PC\\OneDrive\\Máy tính";
         int chunkSize = 50000;
         final List<String> POISON_PILL = Collections.emptyList();
-        Queue<List<String>> queue = new LinkedBlockingQueue<>(50);
+        Queue<List<String>> queue = new ArrayDeque<>(50);
 
         Scanner sc = new Scanner(System.in);
         while (true) {
