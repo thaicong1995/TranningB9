@@ -1,64 +1,61 @@
-package org.example.Assignment;
-
-import org.example.Assignment.HandleException.CustomException;
+package org.example.Assignment.Repo;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
-public class ChunkReadQueue implements IChunkReadQueue {
+public class ChunkRead {
+    private final String filePath;
+    private  final int chunkSize;
+//    public static Queue<List<String>> queue = new ArrayDeque<>();
 
-    public static Queue<List<String>> queue = new LinkedBlockingQueue<>(50);
+    public ChunkRead(String filePath, int chunkSize) {
+        this.filePath = filePath;
+        this.chunkSize = chunkSize;
 
-    //region read
-    public Queue<List<String>> readFileChunks(int chunkSize, String filePath) {
-        if (chunkSize <= 0 || filePath == null || Files.notExists(Paths.get(filePath))) {
-            return  null;
-        }
+    }
 
+    public List<List<String>> read() throws FileNotFoundException {
+        List<List<String>> chunks = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
             List<String> bf = new ArrayList<>();
             String line;
-            // Đọc toàn bộ file
             while ((line = br.readLine()) != null) {
                 bf.add(line);
                 if (bf.size() == chunkSize) {
-                    queue.add(new ArrayList<>(bf));
+                    chunks.add(new ArrayList<>(bf));
                     bf.clear();
                 }
             }
-            // Giới hạn số dòng cần lấy từ dưới lên
-//            for (int i = lines.size() - 1; i >= 0; i--) {
-//                bf.add(lines.get(i));
-//                if (bf.size() == chunkSize) {
-//                    queue.add(new ArrayList<>(bf));
-//                    bf.clear();
-//                }
-//            }
 
             if (!bf.isEmpty()) {
-                queue.add(new ArrayList<>(bf));
+                chunks.add(new ArrayList<>(bf));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return queue;
+        return chunks;
     }
-    //endregion read
 
-    //region processChunk
-    public List<String>  processChunk(List<String> chunkData, String level,
-                                      LocalDateTime from, LocalDateTime to, String message) {
-        return filterLog(chunkData, level, from, to, message);
+    public List<String>  processChunk( List<String> chunkData, String level,
+                                              LocalDateTime from, LocalDateTime to)
+            throws FileNotFoundException {
+        if ( level != null && !level.isEmpty() ) {
+            var logs = findByLevel(level,chunkData);
+            System.out.println( level +"----" + logs);
+            return logs;
+        }
+        else if (from.isBefore(to)) {
+            var logs = findByDate(chunkData, from, to);
+            System.out.println( level +"----" + logs);
+            return logs;
+        }
+        else {
+            return null;
+        }
     }
-    //endregion processChunk
 
-    //region writeToFile
     public void writeToFile(List<String> logsFilter, String outputPath){
         synchronized (this) {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath, true))) {
@@ -71,9 +68,7 @@ public class ChunkReadQueue implements IChunkReadQueue {
             }
         }
     }
-    //endregion writeToFile
 
-    //region createFile
     public String CreateFile(String outputFolder, String fileName) {
         File folder = new File(outputFolder);
         if (!folder.exists()) {
@@ -102,44 +97,6 @@ public class ChunkReadQueue implements IChunkReadQueue {
         }
         return file.getAbsolutePath();
     }
-    //endregion createFile
-
-    //region filterLog
-    private List<String> filterLog(List<String> chunkData,
-                                   String level,
-                                   LocalDateTime from,
-                                   LocalDateTime to,
-                                   String message) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-
-        List<String> result = chunkData;
-
-        if (message != null && !message.isEmpty()) {
-            result = findByMessage(result, message);
-        }
-
-        if (from != null && to != null) {
-            result = findByDate(result, from, to);
-        }
-
-        if (level != null && !level.isEmpty()) {
-            result = findByLevel(result, level);
-        }
-
-        return result;
-    }
-    //endregion filterLog
-
-    private List<String> findByMessage (List<String> chunkData, String message) {
-         return  chunkData.stream()
-                 .filter(line -> {
-                     int dashIndex = line.indexOf('-');
-                     if (dashIndex == -1) return false;
-                     String msgPart = line.substring(dashIndex + 1).trim();
-                     return msgPart.contains(message);
-                 })
-                 .toList();
-    }
 
     private List<String> findByDate(List<String> chunkData, LocalDateTime from, LocalDateTime  to ) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -152,7 +109,8 @@ public class ChunkReadQueue implements IChunkReadQueue {
         }).toList();
     }
 
-    private List<String> findByLevel(List<String> chunkData,String level) {
+
+    private List<String> findByLevel(String level, List<String> chunkData) {
         switch (level.toUpperCase()) {
             case "INFO":
                 return chunkData.stream()
@@ -174,5 +132,7 @@ public class ChunkReadQueue implements IChunkReadQueue {
                 " level " + level + ", count = " + chunkData.size());
 
         return chunkData;
+
     }
+
 }

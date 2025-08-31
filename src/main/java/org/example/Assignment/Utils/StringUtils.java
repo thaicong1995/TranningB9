@@ -1,4 +1,4 @@
-package org.example.Assignment;
+package org.example.Assignment.Utils;
 
 public class StringUtils {
     public static String sanitizeString(String input) {

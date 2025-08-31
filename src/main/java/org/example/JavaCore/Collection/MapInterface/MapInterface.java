@@ -1,4 +1,4 @@
-package org.example.JavaCore.MapInterface;
+package org.example.JavaCore.Collection.MapInterface;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

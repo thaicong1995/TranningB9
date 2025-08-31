@@ -1,4 +1,4 @@
-package org.example.JavaCore.QueueInterface;
+package org.example.JavaCore.Collection.QueueInterface;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -61,6 +61,7 @@ public class QueueInterface {
 
         Queue<Integer> Arqueue = new ArrayDeque<>();
         Queue<Integer> llqueue = new LinkedList<>();
+
        for (int i = 1; i < 18; i++) {
            Arqueue.add(i);
        }

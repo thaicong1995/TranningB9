@@ -1,4 +1,4 @@
-package org.example.JavaCore.ListInterface;
+package org.example.JavaCore.Collection.ListInterface;
 
 import java.util.ArrayList;
 import java.util.Iterator;

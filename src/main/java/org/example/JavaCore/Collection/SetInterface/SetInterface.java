@@ -1,4 +1,4 @@
-package org.example.JavaCore.SetInterface;
+package org.example.JavaCore.Collection.SetInterface;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -10,8 +10,8 @@ public class SetInterface {
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
 //        Set<String> set = new HashSet<String>();
 //        Set<Integer> setint = new HashSet<Integer>();
-//        Set<String> set1 = new LinkedHashSet<String>();
-//        Set<String> set2 = new TreeSet<>();
+        Set<String> set1 = new LinkedHashSet<String>();
+        Set<String> set2 = new TreeSet<>();
 //
 //        // Tự động loại bỏ các giá trị trùng.
 //        // HashMap
@@ -72,7 +72,7 @@ public class SetInterface {
 //
 //        sett.add("1");
 
-
+        Stack<String> an = new Stack<>();
         // Lấy HashMap nội bộ của HashSet
         Field mapField = HashSet.class.getDeclaredField("map");
         mapField.setAccessible(true);
